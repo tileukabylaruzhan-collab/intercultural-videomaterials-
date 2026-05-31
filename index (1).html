@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson Plans | Intercultural Competence</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1B2A4A;--navy-mid:#243657;--blue:#2E5FA3;--blue-light:#EBF1FB;--gold:#C8922A;--gold-light:#FEF3DC;--teal:#0D7377;--teal-light:#E0F4F4;--green:#16A34A;--green-light:#DCFCE7;--amber:#D97706;--amber-light:#FEF9C3;--gray:#64748B;--gray-light:#F1F5F9;--border:#E2E8F0;--text:#1E293B;--text-sec:#64748B;--white:#FFFFFF;--radius:10px;--radius-lg:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#F8FAFC;color:var(--text);min-height:100vh}
+.topbar{background:var(--navy);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;box-shadow:0 1px 8px rgba(0,0,0,.15)}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.topbar-logo{width:34px;height:34px;border-radius:8px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--navy)}
+.topbar-title{font-size:14px;font-weight:600;color:#fff}
+.topbar-sub{font-size:11px;color:rgba(255,255,255,.55);margin-top:1px}
+.topbar-badge{background:rgba(200,146,42,.2);color:var(--gold);font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid rgba(200,146,42,.35)}
+.layout{display:flex;min-height:calc(100vh - 60px)}
+.sidebar{width:260px;flex-shrink:0;background:var(--white);border-right:1px solid var(--border);padding:1.25rem 0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto}
+.sidebar-section{font-size:10px;font-weight:600;color:var(--gray);letter-spacing:.08em;text-transform:uppercase;padding:0 1.25rem;margin-bottom:8px}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:9px 1.25rem;cursor:pointer;transition:background .12s;border:none;background:none;width:100%;text-align:left;border-left:3px solid transparent}
+.sidebar-item:hover{background:var(--gray-light)}
+.sidebar-item.active{background:var(--blue-light);border-left-color:var(--blue)}
+.sidebar-num{width:26px;height:26px;border-radius:6px;background:var(--gray-light);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--gray);flex-shrink:0;transition:all .12s}
+.sidebar-item.active .sidebar-num{background:var(--blue);color:var(--white)}
+.sidebar-item.done .sidebar-num{background:var(--green);color:var(--white)}
+.sidebar-info{flex:1;min-width:0}
+.sidebar-name{font-size:13px;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sidebar-item.active .sidebar-name{color:var(--blue)}
+.sidebar-sub-name{font-size:11px;color:var(--text-sec);margin-top:1px}
+.sidebar-footer{padding:1rem 1.25rem;border-top:1px solid var(--border);margin-top:1rem}
+.progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text-sec);margin-bottom:6px}
+.progress-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:var(--blue);border-radius:2px;transition:width .3s}
+.main{flex:1;padding:2rem;max-width:960px}
+.lesson-header{background:var(--navy);border-radius:var(--radius-lg);padding:1.75rem 2rem;margin-bottom:1.5rem;display:flex;gap:1.25rem;align-items:flex-start}
+.lesson-num-big{width:52px;height:52px;border-radius:12px;background:rgba(200,146,42,.2);border:1.5px solid rgba(200,146,42,.4);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:var(--gold);flex-shrink:0}
+.lesson-header-info{flex:1}
+.lesson-header-info h1{font-size:20px;font-weight:700;color:#fff;margin-bottom:4px}
+.lesson-header-info p{font-size:13px;color:rgba(255,255,255,.6)}
+.lesson-header-badges{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.lbadge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid}
+.lbadge-blue{background:rgba(46,95,163,.25);color:#93C5FD;border-color:rgba(147,197,253,.3)}
+.lbadge-gold{background:rgba(200,146,42,.2);color:var(--gold);border-color:rgba(200,146,42,.35)}
+.info-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:1.5rem}
+.info-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:.9rem 1.1rem}
+.info-card-label{font-size:10px;color:var(--text-sec);font-weight:600;margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em}
+.info-card-val{font-size:13px;font-weight:500;color:var(--text);line-height:1.4}
+.section-title{font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;margin-top:1.5rem}
+/* Stage tabs */
+.stage-tabs{display:flex;gap:0;margin-bottom:0;border-radius:var(--radius) var(--radius) 0 0;overflow:hidden;border:1px solid var(--border);border-bottom:none}
+.stage-tab{flex:1;padding:10px 8px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:var(--gray-light);color:var(--text-sec);transition:all .12s;display:flex;align-items:center;justify-content:center;gap:6px}
+.stage-tab:not(:last-child){border-right:1px solid var(--border)}
+.stage-tab.active-pre{background:var(--blue-light);color:var(--blue)}
+.stage-tab.active-while{background:var(--amber-light);color:var(--amber)}
+.stage-tab.active-post{background:var(--green-light);color:var(--green)}
+.stage-content{background:var(--white);border:1px solid var(--border);border-radius:0 0 var(--radius-lg) var(--radius-lg);padding:1.25rem;display:none}
+.stage-content.visible{display:block}
+/* Tasks */
+.task-block{margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
+.task-block:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.task-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px}
+.task-num{width:24px;height:24px;border-radius:6px;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.task-num-pre{background:var(--blue-light);color:var(--blue)}
+.task-num-while{background:var(--amber-light);color:var(--amber)}
+.task-num-post{background:var(--green-light);color:var(--green)}
+.task-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
+.task-meta{font-size:11px;color:var(--text-sec)}
+.task-body{font-size:13px;color:var(--text-sec);line-height:1.6;margin-left:34px}
+.task-body p{margin-bottom:6px}
+.task-body ol,.task-body ul{padding-left:1.2rem;margin-bottom:6px}
+.task-body li{margin-bottom:4px}
+.task-body strong{color:var(--text);font-weight:600}
+/* Table */
+.task-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}
+.task-table th{background:var(--gray-light);font-weight:600;color:var(--text);padding:7px 10px;text-align:left;border:1px solid var(--border)}
+.task-table td{padding:7px 10px;border:1px solid var(--border);color:var(--text-sec);vertical-align:top}
+.task-table tr:nth-child(even) td{background:#FAFAFA}
+/* Word bank */
+.word-bank{background:var(--gold-light);border:1px solid rgba(200,146,42,.3);border-radius:var(--radius);padding:8px 12px;font-size:12px;color:var(--text);margin-bottom:10px;font-weight:500}
+/* Assessment */
+.assessment-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:8px}
+.assessment-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:.75rem 1rem}
+.assessment-card-label{font-size:11px;color:var(--text-sec);margin-bottom:4px}
+.assessment-card-val{font-size:18px;font-weight:700;color:var(--blue)}
+.assessment-card-desc{font-size:11px;color:var(--text-sec);margin-top:2px}
+/* Outcome */
+.outcome-box{background:var(--teal-light);border:1px solid rgba(13,115,119,.2);border-radius:var(--radius);padding:1rem 1.25rem;display:flex;align-items:flex-start;gap:10px;margin-bottom:1.5rem}
+.outcome-label{font-size:10px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.outcome-text{font-size:13px;font-weight:500;color:var(--text)}
+/* Nav */
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
+.nav-btn{display:flex;align-items:center;gap:7px;padding:9px 18px;border-radius:var(--radius);border:1px solid var(--border);background:var(--white);font-size:13px;font-weight:500;color:var(--text);cursor:pointer;transition:all .12s}
+.nav-btn:hover{background:var(--gray-light)}
+.nav-btn:disabled{opacity:.35;cursor:not-allowed}
+.nav-btn-primary{background:var(--blue);color:var(--white);border-color:var(--blue)}
+.nav-btn-primary:hover{background:#1B4A8A}
+.mark-done-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--radius);border:1px solid var(--green);background:var(--green-light);font-size:12px;font-weight:600;color:var(--green);cursor:pointer;transition:all .12s;margin-bottom:1.5rem}
+.mark-done-btn:hover{background:#BBF7D0}
+.mark-done-btn.done{background:var(--green);color:#fff}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+@media(max-width:700px){.sidebar{display:none}.main{padding:1rem}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">ICC</div>
+    <div>
+      <div class="topbar-title">Lesson Plans Platform</div>
+      <div class="topbar-sub">Authentic Video Materials · Intercultural Communicative Competence</div>
+    </div>
+  </div>
+  <div class="topbar-badge">8 Lessons · B1</div>
+</div>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main" id="main"></main>
+</div>
+<script>
+const LESSONS=[
+{n:1,t:"Greeting Cultures",s:"Register · Non-verbal · Pragmatics",
+focus:"Greeting styles · Body language · Personal space",
+video:"BBC Learning English — How to greet people formally",
+link:"https://www.youtube.com/watch?v=o5ghhSAxopw",
+duration:"3 min",icc:"Register awareness · Pragmatics · Non-verbal communication",
+out:"Students identify formal/informal register and cultural norms in English greetings",
+goal:"Produce culturally appropriate greetings in formal and informal contexts",
+pre:[
+{title:"Task 1 · Warm-up Discussion",meta:"pairs · 4 min",body:`<p>Talk to your partner. Answer in full sentences.</p><ol>
+<li>Think about your own culture: how do you greet (a) a close friend; (b) a teacher; (c) a stranger you meet at a formal event? What changes?</li>
+<li>Look at these two sentences. Which is formal and which is informal? How do you know?<br><strong>A)</strong> "Yo, what's up!" &nbsp;&nbsp;<strong>B)</strong> "Good morning, it's a pleasure to meet you."</li>
+<li>Before watching — <strong>PREDICT:</strong> how do you think British people greet someone for the very first time in a formal setting?</li></ol>`},
+{title:"Task 2 · Vocabulary — Match the Word to its Definition",meta:"individual",body:`<p>Match words 1–7 with definitions A–G.</p>
+<table class="task-table"><thead><tr><th>#</th><th>Word</th><th>Definition</th></tr></thead><tbody>
+<tr><td>1</td><td><strong>register</strong></td><td>A — A greeting used in official situations (job interview, first meeting)</td></tr>
+<tr><td>2</td><td><strong>honorific</strong></td><td>B — Looking directly into another person's eyes during conversation</td></tr>
+<tr><td>3</td><td><strong>formal greeting</strong></td><td>C — A title showing respect (Mr., Dr., Professor)</td></tr>
+<tr><td>4</td><td><strong>eye contact</strong></td><td>D — The level of formality in language (formal, neutral, informal)</td></tr>
+<tr><td>5</td><td><strong>handshake</strong></td><td>E — The physical distance between two people when they communicate</td></tr>
+<tr><td>6</td><td><strong>proximity</strong></td><td>F — Two people clasping hands briefly as a greeting or farewell</td></tr>
+<tr><td>7</td><td><strong>faux pas</strong></td><td>G — An embarrassing social mistake caused by ignoring cultural rules</td></tr>
+</tbody></table>`},
+{title:"Task 3 · True / False — Predict Before You Watch",meta:"individual then check",body:`<table class="task-table"><thead><tr><th>Statement</th><th>Prediction</th><th>Evidence from video</th></tr></thead><tbody>
+<tr><td>1. In British formal situations, shaking hands is the standard greeting for a first meeting.</td><td>T / F</td><td></td></tr>
+<tr><td>2. The phrase 'How do you do?' is answered with 'I'm doing great, thanks!'</td><td>T / F</td><td></td></tr>
+<tr><td>3. Eye contact is generally AVOIDED in English-speaking cultures as a sign of respect.</td><td>T / F</td><td></td></tr>
+<tr><td>4. In formal English, people address others using their first name immediately.</td><td>T / F</td><td></td></tr>
+<tr><td>5. Non-verbal communication (posture, tone) plays an important role in formal greetings.</td><td>T / F</td><td></td></tr>
+<tr><td>6. Using the wrong register in a greeting can cause a cultural misunderstanding.</td><td>T / F</td><td></td></tr>
+</tbody></table>`},
+{title:"Task 4 · Gap-fill — Activate Vocabulary Before Watching",meta:"individual",body:`<div class="word-bank">Word Bank: register · handshake · faux pas · eye contact · set-phrase · proximity</div>
+<ol>
+<li>In British culture, using someone's title and surname shows you understand the correct ________ for a formal context.</li>
+<li>A firm ________ is still the most common physical greeting in professional British settings.</li>
+<li>Saying 'Hey mate, how's it going?' to your boss on the first day would be a social ________.</li>
+<li>Good ________ — looking directly at the person — signals confidence and respect.</li>
+<li>The phrase 'How do you do?' is a fixed ________ expression. The correct reply is simply to repeat it back.</li>
+<li>Understanding the ________ — how far to stand from someone — is part of non-verbal communication.</li>
+</ol>`}
+],
+wh:[
+{title:"Task 5 · Cultural Observation Checklist",meta:"while watching",body:`<table class="task-table"><thead><tr><th>Observed Behaviour</th><th>YES ✓</th><th>PARTLY ◑</th><th>NO ✗</th></tr></thead><tbody>
+<tr><td>Speaker uses formal vocabulary (titles, full phrases)</td><td></td><td></td><td></td></tr>
+<tr><td>Speaker maintains appropriate register throughout</td><td></td><td></td><td></td></tr>
+<tr><td>Non-verbal cues (posture, gesture, tone) match the formal context</td><td></td><td></td><td></td></tr>
+<tr><td>Speaker demonstrates awareness of cultural expectations</td><td></td><td></td><td></td></tr>
+<tr><td>Difference between formal and informal greetings is made clear</td><td></td><td></td><td></td></tr>
+</tbody></table>`},
+{title:"Task 6 · Note-taking — What Does the Video Show?",meta:"while watching",body:`<table class="task-table"><thead><tr><th>Question</th><th>Your notes</th></tr></thead><tbody>
+<tr><td>1. What vocabulary is used in formal greetings? (list 3+ phrases)</td><td></td></tr>
+<tr><td>2. How does the speaker's tone/voice differ from informal speech?</td><td></td></tr>
+<tr><td>3. What physical/non-verbal behaviours are shown?</td><td></td></tr>
+<tr><td>4. What would happen if you used an informal greeting in this context?</td><td></td></tr>
+<tr><td>5. What surprised you most about British greeting culture?</td><td></td></tr>
+</tbody></table>`},
+{title:"Task 7 · Sentence Sorting — Build the Dialogue",meta:"individual",body:`<p>Unscramble each line into a correct sentence. Together they make a formal greeting dialogue.</p>
+<table class="task-table"><thead><tr><th>#</th><th>Scrambled words</th><th>Your answer</th></tr></thead><tbody>
+<tr><td>1</td><td>morning / Good / it / a / to / pleasure / meet / is / you / ,</td><td></td></tr>
+<tr><td>2</td><td>introduce / allow / me / to / myself / please / ,</td><td></td></tr>
+<tr><td>3</td><td>do / do / How / you / ?</td><td></td></tr>
+<tr><td>4</td><td>do / How / you / — / do / the / correct / response / is / to / repeat / this</td><td></td></tr>
+<tr><td>5</td><td>look / to / forward / working / together / I</td><td></td></tr>
+<tr><td>6</td><td>you / having / us / Thank / for</td><td></td></tr>
+</tbody></table>`},
+{title:"Task 8 · Error Correction — Spot the Mistake",meta:"individual",body:`<p>Each sentence contains ONE cultural or linguistic error. Find it and write the correction.</p>
+<table class="task-table"><thead><tr><th>Sentence with ONE error</th><th>Corrected sentence</th></tr></thead><tbody>
+<tr><td>1. In formal British introductions, you should use the other person's first name straight away.</td><td></td></tr>
+<tr><td>2. 'How do you do?' is an informal question — answer it with: 'Fine thanks, how about you?'</td><td></td></tr>
+<tr><td>3. Eye contact is considered rude in English-speaking cultures and should always be avoided.</td><td></td></tr>
+<tr><td>4. A faux pas is a brilliant cultural move that always impresses people in formal situations.</td><td></td></tr>
+<tr><td>5. The word 'register' in linguistics means the volume of a speaker's voice.</td><td></td></tr>
+</tbody></table>`}
+],
+po:[
+{title:"Task 9 · Role-play",meta:"pairs · 6 min",body:`<table class="task-table"><thead><tr><th>Scenario</th><th>Student A</th><th>Student B</th><th>Key challenge</th></tr></thead><tbody>
+<tr><td><strong>A — Formal</strong></td><td>New British teacher (Mr./Ms. + surname)</td><td>Kazakh school director</td><td>Correct titles, register, handshake, eye contact</td></tr>
+<tr><td><strong>B — Informal</strong></td><td>English-speaking exchange student (age 16)</td><td>Kazakh classmate (age 16)</td><td>Friendly but not rude — find the right casual register</td></tr>
+</tbody></table>
+<p style="margin-top:10px"><strong>After the role-play, discuss:</strong> What was the hardest part? Did any cultural misunderstandings happen? How did you fix them?</p>`},
+{title:"Task 10 · Cross-cultural Comparison Table",meta:"pairs + class discussion",body:`<table class="task-table"><thead><tr><th>Aspect</th><th>British / English-speaking</th><th>Kazakh culture</th><th>Key difference</th></tr></thead><tbody>
+<tr><td>Opening words</td><td></td><td></td><td></td></tr>
+<tr><td>Physical contact</td><td></td><td></td><td></td></tr>
+<tr><td>Eye contact</td><td></td><td></td><td></td></tr>
+<tr><td>Use of titles</td><td></td><td></td><td></td></tr>
+<tr><td>Personal space</td><td></td><td></td><td></td></tr>
+<tr><td>Tone and formality</td><td></td><td></td><td></td></tr>
+</tbody></table>`},
+{title:"Task 11 · Reflective Writing",meta:"individual · 80–120 words",body:`<p>What did this video teach you about greeting cultures? What surprised you? How will this knowledge help you communicate better in English-speaking contexts? Compare with your own cultural experience.</p>`},
+{title:"Assessment",meta:"ICC Score",body:`<table class="task-table"><thead><tr><th>ICC Descriptor</th><th>Assessment Criteria</th><th>Score</th></tr></thead><tbody>
+<tr><td>Understanding cultural context</td><td>Correctly identifies British greeting norms</td><td>15 pts</td></tr>
+<tr><td>Register awareness</td><td>Distinguishes formal vs. informal with examples</td><td>15 pts</td></tr>
+<tr><td>Pragmatic interpretation</td><td>Recognises implied meaning in greeting phrases</td><td>15 pts</td></tr>
+<tr><td>Non-verbal communication</td><td>Analyses posture, eye contact, physical behaviour</td><td>10 pts</td></tr>
+<tr><td>Reflection quality</td><td>Thoughtful written comparison with own culture</td><td>10 pts</td></tr>
+<tr><td>Role-play performance</td><td>Fluent, culturally appropriate, correct register</td><td>10 pts</td></tr>
+</tbody></table>`}
+]},
+
+{n:2,t:"School Life Across Cultures",s:"Behaviour · Hierarchy · Norms",
+focus:"Teacher-student relationships · Classroom behaviour norms",
+video:"YouTube Education — Classroom culture comparison",
+link:"https://www.youtube.com/",duration:"5–6 min",
+icc:"Cultural norms · Social behaviour · Comparative analysis",
+out:"Students identify and compare classroom cultural norms across cultures",
+goal:"Distinguish cultural behaviour patterns in educational settings",
+pre:[
+{title:"Task 1 · Warm-up Discussion",meta:"pairs · 4 min",body:`<ol>
+<li>How do students behave in your classroom? What is considered respectful?</li>
+<li>Do you think students in the UK, Japan, and the USA behave the same way in class? What differences might there be?</li>
+<li><strong>PREDICT:</strong> What classroom rules or habits might surprise a foreign student visiting a Kazakh school?</li>
+</ol>`},
+{title:"Task 2 · Vocabulary — Match the Word to its Definition",meta:"individual",body:`<table class="task-table"><thead><tr><th>#</th><th>Word</th><th>Definition</th></tr></thead><tbody>
+<tr><td>1</td><td><strong>discipline</strong></td><td>A — The accepted rules of behaviour in a group or society</td></tr>
+<tr><td>2</td><td><strong>respect</strong></td><td>B — Controlled behaviour and obedience to rules</td></tr>
+<tr><td>3</td><td><strong>hierarchy</strong></td><td>C — A system where people are ranked according to status or authority</td></tr>
+<tr><td>4</td><td><strong>participation</strong></td><td>D — Admiration or regard for someone's status, feelings, or rights</td></tr>
+<tr><td>5</td><td><strong>norm</strong></td><td>E — Taking an active part in a discussion, activity, or class</td></tr>
+</tbody></table>`},
+{title:"Task 3 · True / False — Predict, then Verify",meta:"individual then check",body:`<table class="task-table"><thead><tr><th>Statement</th><th>Prediction</th><th>Evidence from video</th></tr></thead><tbody>
+<tr><td>1. Students in all cultures are expected to raise their hand before speaking in class.</td><td>T / F</td><td></td></tr>
+<tr><td>2. In some cultures, disagreeing with a teacher openly is considered disrespectful.</td><td>T / F</td><td></td></tr>
+<tr><td>3. Classroom participation norms are the same around the world.</td><td>T / F</td><td></td></tr>
+<tr><td>4. Eye contact with a teacher can signal respect in some cultures and disrespect in others.</td><td>T / F</td><td></td></tr>
+<tr><td>5. School uniforms reflect cultural values about equality and identity.</td><td>T / F</td><td></td></tr>
+</tbody></table>`},
+{title:"Task 4 · Prediction Grid",meta:"pairs",body:`<table class="task-table"><thead><tr><th>Question</th><th>Japan</th><th>Finland</th><th>USA</th><th>Kazakhstan</th></tr></thead><tbody>
+<tr><td>Do students stand when the teacher enters?</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Do students call the teacher by first name?</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Is group work common?</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Are mobile phones allowed?</td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>`}
+],
+wh:[
+{title:"Task 5 · Behaviour Analysis Checklist",meta:"while watching",body:`<table class="task-table"><thead><tr><th>Behaviour observed</th><th>YES ✓</th><th>PARTLY ◑</th><th>NO ✗</th></tr></thead><tbody>
+<tr><td>Students show visible signs of respect towards the teacher</td><td></td><td></td><td></td></tr>
+<tr><td>There are clear rules about when to speak</td><td></td><td></td><td></td></tr>
+<tr><td>Non-verbal behaviour (posture, gaze) shows status difference</td><td></td><td></td><td></td></tr>
+<tr><td>Students participate actively in discussion</td><td></td><td></td><td></td></tr>
+<tr><td>At least one cultural difference from Kazakhstan is visible</td><td></td><td></td><td></td></tr>
+</tbody></table>`},
+{title:"Task 6 · Note-taking",meta:"while watching",body:`<table class="task-table"><thead><tr><th>Focus area</th><th>Your notes</th></tr></thead><tbody>
+<tr><td>How do students greet the teacher?</td><td></td></tr>
+<tr><td>How do students show agreement / disagreement?</td><td></td></tr>
+<tr><td>What surprises you about the classroom behaviour?</td><td></td></tr>
+<tr><td>What is similar to your own classroom?</td><td></td></tr>
+</tbody></table>`},
+{title:"Task 7 · Pause & Predict",meta:"individual",body:`<p>Your teacher will pause the video at key moments. Write your prediction before watching what happens next.</p>
+<table class="task-table"><thead><tr><th>Pause #</th><th>What do you think will happen next?</th><th>What actually happened?</th></tr></thead><tbody>
+<tr><td>1</td><td></td><td></td></tr>
+<tr><td>2</td><td></td><td></td></tr>
+<tr><td>3</td><td></td><td></td></tr>
+</tbody></table>`},
+{title:"Task 8 · Compare & Contrast",meta:"pairs",body:`<p>Use discourse markers: <em>However / In contrast / Similarly / On the other hand / Both cultures...</em></p>
+<p>Write 4–5 sentences comparing classroom behaviour in the video with your own classroom.</p>`}
+],
+po:[
+{title:"Task 9 · Venn Diagram Discussion",meta:"pairs + class",body:`<p>Draw a Venn diagram comparing your classroom and the one in the video. Share with the class: what is unique to each? What do they share?</p>`},
+{title:"Task 10 · Mini-Dialogue",meta:"pairs · 6 min",body:`<p>Write and perform a 6-line dialogue between a teacher and a student. Follow the cultural norms you observed in the video.</p>
+<p><strong>Scenario:</strong> A student arrives 5 minutes late to class. How do they apologise? How does the teacher respond?</p>`},
+{title:"Task 11 · Reflective Writing",meta:"individual · 80–120 words",body:`<p>What surprised you most about classroom culture in the video? Describe one specific behaviour that is different from your own experience and explain why it might exist in that culture.</p>`},
+{title:"Assessment",meta:"ICC Score",body:`<table class="task-table"><thead><tr><th>ICC Descriptor</th><th>Assessment Criteria</th><th>Score</th></tr></thead><tbody>
+<tr><td>Understanding cultural context</td><td>Identifies classroom norms and cultural differences accurately</td><td>15 pts</td></tr>
+<tr><td>Comparative analysis</td><td>Compares two cultures with specific examples</td><td>15 pts</td></tr>
+<tr><td>Non-verbal awareness</td><td>Identifies behaviour signals and their cultural meaning</td><td>15 pts</td></tr>
+<tr><td>Reflection quality</td><td>Thoughtful personal comparison with specific detail</td><td>10 pts</td></tr>
+<tr><td>Dialogue performance</td><td>Culturally appropriate language and behaviour</td><td>10 pts</td></tr>
+</tbody></table>`}
+]},
+
+{n:3,t:"Family Values and Traditions",s:"Roles · Generations · Culture",
+focus:"Family roles · Intergenerational relationships · Cultural values",
+video:"TED-Ed — Family structures around the world",
+link:"https://www.youtube.com/",duration:"5 min",
+icc:"Cultural values · Social structure · Empathy",
+out:"Students understand how cultural context shapes family roles and relationships",
+goal:"Recognise and compare family value systems across cultures",
+pre:[
+{title:"Task 1 · Warm-up: My Family",meta:"pairs · 4 min",body:`<ol>
+<li>Write 3 sentences about your family. Share with your partner.</li>
+<li>Who makes decisions in your family? How is this different from your grandparents' generation?</li>
+<li><strong>PREDICT:</strong> What family structures or values do you think the video will show?</li>
+</ol>`},
+{title:"Task 2 · Vocabulary — Match",meta:"individual",body:`<table class="task-table"><thead><tr><th>#</th><th>Word</th><th>Definition</th></tr></thead><tbody>
+<tr><td>1</td><td><strong>generation</strong></td><td>A — Shared beliefs and principles that guide behaviour in a culture</td></tr>
+<tr><td>2</td><td><strong>tradition</strong></td><td>B — A group of people born and living at roughly the same time</td></tr>
+<tr><td>3</td><td><strong>nuclear family</strong></td><td>C — A custom or belief passed down through generations</td></tr>
+<tr><td>4</td><td><strong>extended family</strong></td><td>D — Parents and their children living together as a unit</td></tr>
+<tr><td>5</td><td><strong>values</strong></td><td>E — A family including grandparents, aunts, uncles, and cousins</td></tr>
+</tbody></table>`},
+{title:"Task 3 · True / False Prediction",meta:"individual then check",body:`<table class="task-table"><thead><tr><th>Statement</th><th>Prediction</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>1. Extended family structures are more common in collectivist cultures.</td><td>T / F</td><td></td></tr>
+<tr><td>2. Family roles (who cooks, who earns money) are the same in all cultures.</td><td>T / F</td><td></td></tr>
+<tr><td>3. Respect for elders is a value found in most cultures.</td><td>T / F</td><td></td></tr>
+<tr><td>4. Young people in Western cultures often live independently from their parents.</td><td>T / F</td><td></td></tr>
+</tbody></table>`},
+{title:"Task 4 · Cultural Quiz",meta:"individual",body:`<p>Answer these questions before watching. Then check after the video.</p>
+<ol>
+<li>In which culture do adult children most commonly live with their parents until marriage?</li>
+<li>What does the term "nuclear family" mean?</li>
+<li>Name one tradition in your family that you think is unique to Kazakh culture.</li>
+<li>What challenges might arise between parents and children from different generations?</li>
+</ol>`}
+],
+wh:[
+{title:"Task 5 · Role Identifier",meta:"while watching",body:`<table class="task-table"><thead><tr><th>Family member shown</th><th>Their role / behaviour</th><th>Cultural significance</th></tr></thead><tbody>
+<tr><td>Grandparent</td><td></td><td></td></tr>
+<tr><td>Parent</td><td></td><td></td></tr>
+<tr><td>Child</td><td></td><td></td></tr>
+</tbody></table>`},
+{title:"Task 6 · Value Hunt",meta:"while watching",body:`<p>Tick each value when you see or hear evidence of it in the video. Add a brief note.</p>
+<table class="task-table"><thead><tr><th>Value</th><th>Seen? ✓</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>Respect for elders</td><td></td><td></td></tr>
+<tr><td>Independence</td><td></td><td></td></tr>
+<tr><td>Collectivism / family loyalty</td><td></td><td></td></tr>
+<tr><td>Financial responsibility</td><td></td><td></td></tr>
+<tr><td>Gender roles</td><td></td><td></td></tr>
+</tbody></table>`},
+{title:"Task 7 · Non-verbal Bingo",meta:"while watching",body:`<p>Cross off each behaviour when you spot it in the video.</p>
+<table class="task-table"><thead><tr><th colspan="3">Non-verbal Bingo Card</th></tr></thead><tbody>
+<tr><td>Warm hug between family members</td><td>Respectful nod to elder</td><td>Shared meal scene</td></tr>
+<tr><td>Physical affection (touch)</td><td>Eye contact showing respect</td><td>Gift giving</td></tr>
+<tr><td>Elder speaking — others listening</td><td>Children helping with chores</td><td>Family celebration</td></tr>
+</tbody></table>`},
+{title:"Task 8 · Note Comparison",meta:"pairs",body:`<p>Compare your notes from Tasks 5–7 with your partner. What did your partner notice that you missed? Add to your notes.</p>`}
+],
+po:[
+{title:"Task 9 · Dialogue Writing",meta:"pairs",body:`<p>Write a dialogue (8 lines) between a grandparent and a grandchild from the culture shown in the video. Show at least one cultural value in the conversation.</p>
+<p><strong>Situation:</strong> The grandchild wants to move to another city for university. The grandparent has concerns.</p>`},
+{title:"Task 10 · SWOT Analysis",meta:"small groups",body:`<p>Analyse Kazakh family traditions using the SWOT framework.</p>
+<table class="task-table"><thead><tr><th>Strengths</th><th>Weaknesses</th></tr></thead><tbody><tr><td></td><td></td></tr></tbody></table>
+<table class="task-table"><thead><tr><th>Opportunities</th><th>Threats</th></tr></thead><tbody><tr><td></td><td></td></tr></tbody></table>`},
+{title:"Task 11 · Reflective Writing",meta:"individual · 80–120 words",body:`<p>What is similar between your own family and the families shown in the video? What is different? Why do you think these differences exist?</p>`},
+{title:"Assessment",meta:"ICC Score",body:`<table class="task-table"><thead><tr><th>ICC Descriptor</th><th>Assessment Criteria</th><th>Score</th></tr></thead><tbody>
+<tr><td>Cultural knowledge</td><td>Correctly identifies family values and roles across cultures</td><td>15 pts</td></tr>
+<tr><td>Empathy and attitude</td><td>Shows open, respectful attitude towards different family structures</td><td>15 pts</td></tr>
+<tr><td>Comparative analysis</td><td>Compares own culture with video culture using specific examples</td><td>15 pts</td></tr>
+<tr><td>Reflection quality</td><td>Thoughtful personal reflection with cultural insight</td><td>10 pts</td></tr>
+<tr><td>Dialogue performance</td><td>Culturally appropriate content and language</td><td>10 pts</td></tr>
+</tbody></table>`}
+]},
+
+{n:4,t:"Humor and Misunderstanding",s:"Sarcasm · Irony · Face-saving",
+focus:"Cultural humour · Implied meaning · Sarcasm",
+video:"BBC 6 Minute English — Cultural differences and body language",
+link:"https://www.youtube.com/watch?v=oTPZWpQ9pbA",duration:"~6 min",
+icc:"Sociocultural pragmatics · Irony & sarcasm · Face-saving · Cultural taboo",
+out:"Students recognise implied meanings, cultural humour differences, and misunderstanding triggers",
+goal:"Navigate humour and potential misunderstandings in cross-cultural interactions",
+pre:[
+{title:"Task 1 · Warm-up Discussion",meta:"pairs · 4 min",body:`<ol>
+<li>Have you ever laughed at the wrong moment? What happened? Why was it awkward?</li>
+<li>Can you think of a joke that is funny in Kazakh but would be confusing (or even rude) in English? Why doesn't it translate?</li>
+<li>"Humor is cultural, not universal." Do you agree? Give one example to support your view.</li>
+<li>What does 'sarcasm' mean? Is it common in your culture? How about in British culture?</li>
+</ol>`},
+{title:"Task 2 · Vocabulary — Match the Word to its Definition",meta:"individual",body:`<table class="task-table"><thead><tr><th>#</th><th>Word</th><th>Definition</th></tr></thead><tbody>
+<tr><td>1</td><td><strong>sarcasm</strong></td><td>A — Saying something is much less serious/important than it really is</td></tr>
+<tr><td>2</td><td><strong>irony</strong></td><td>B — Using words that mean the OPPOSITE of what you actually intend</td></tr>
+<tr><td>3</td><td><strong>understatement</strong></td><td>C — Mocking or criticising something through sharp ironic language</td></tr>
+<tr><td>4</td><td><strong>faux pas</strong></td><td>D — An embarrassing social mistake that violates cultural norms</td></tr>
+<tr><td>5</td><td><strong>cultural taboo</strong></td><td>E — A topic that is forbidden or deeply uncomfortable in a particular culture</td></tr>
+<tr><td>6</td><td><strong>face-saving</strong></td><td>F — A strategy used to protect your own or someone else's dignity</td></tr>
+<tr><td>7</td><td><strong>misunderstanding</strong></td><td>G — When two people interpret the same words or actions differently</td></tr>
+</tbody></table>`},
+{title:"Task 3 · True / False — Predict, then Verify",meta:"individual then check",body:`<table class="task-table"><thead><tr><th>Statement</th><th>Prediction</th><th>Evidence from video</th></tr></thead><tbody>
+<tr><td>1. Humour is universal — the same things are funny in every culture.</td><td>T / F</td><td></td></tr>
+<tr><td>2. British English is famous for understatement — minimising how serious things are.</td><td>T / F</td><td></td></tr>
+<tr><td>3. Sarcasm always translates perfectly across cultures without any misunderstanding.</td><td>T / F</td><td></td></tr>
+<tr><td>4. A gesture that means 'yes' in one culture can mean 'no' in another.</td><td>T / F</td><td></td></tr>
+<tr><td>5. Laughing at the wrong moment in some cultures is considered deeply rude.</td><td>T / F</td><td></td></tr>
+<tr><td>6. Face-saving strategies are only used in Asian cultures.</td><td>T / F</td><td></td></tr>
+<tr><td>7. Cultural misunderstandings in business can damage professional relationships.</td><td>T / F</td><td></td></tr>
+</tbody></table>`},
+{title:"Task 4 · Gap-fill",meta:"individual",body:`<div class="word-bank">Word Bank: understatement · sarcasm · irony · faux pas · taboo · face-saving · misunderstanding</div>
+<ol>
+<li>When a British person says 'It's not too bad' about a catastrophic situation, that's called __________ — making something sound less serious than it is.</li>
+<li>Using sharp, biting irony to mock or criticise something is called __________.</li>
+<li>Saying 'Oh, fantastic!' when you actually mean the opposite is an example of __________.</li>
+<li>In Japan, laughing loudly in public may be considered a social __________ — a cultural mistake.</li>
+<li>When a topic is deeply sensitive or forbidden in a culture, it is called a cultural __________.</li>
+<li>A __________ strategy — such as changing the subject politely — helps avoid direct embarrassment.</li>
+<li>A __________ happens when two people from different cultures interpret the same phrase differently.</li>
+</ol>`},
+{title:"Task 5 · Literal or Hidden?",meta:"individual",body:`<p>Read each sentence. Write <strong>L</strong> (literal meaning) or <strong>H</strong> (hidden/implied meaning).</p>
+<table class="task-table"><thead><tr><th>#</th><th>Sentence</th><th>L or H?</th><th>Actual meaning</th></tr></thead><tbody>
+<tr><td>1</td><td>"Oh, brilliant — another Monday morning!"</td><td></td><td></td></tr>
+<tr><td>2</td><td>"Could you please pass the salt?"</td><td></td><td></td></tr>
+<tr><td>3</td><td>"It's not the worst presentation I've ever seen."</td><td></td><td></td></tr>
+<tr><td>4</td><td>"I'm fine." (said with a sigh)</td><td></td><td></td></tr>
+</tbody></table>`}
+],
+wh:[
+{title:"Task 6 · Cultural Observation Checklist",meta:"while watching",body:`<table class="task-table"><thead><tr><th>Observed Behaviour</th><th>YES ✓</th><th>PARTLY ◑</th><th>NO ✗</th></tr></thead><tbody>
+<tr><td>Speakers use polite expressions despite discussing uncomfortable topics</td><td></td><td></td><td></td></tr>
+<tr><td>Register remains appropriate and controlled throughout</td><td></td><td></td><td></td></tr>
+<tr><td>Cultural differences in humour are discussed with real examples</td><td></td><td></td><td></td></tr>
+<tr><td>Body language and facial expressions are analysed in the video</td><td></td><td></td><td></td></tr>
+<tr><td>At least one specific cultural misunderstanding is described</td><td></td><td></td><td></td></tr>
+</tbody></table>`},
+{title:"Task 7 · Note-taking — Capture Key Ideas",meta:"while watching",body:`<table class="task-table"><thead><tr><th>Focus area</th><th>Your notes from the video</th></tr></thead><tbody>
+<tr><td>Example 1: cultural incident or misunderstanding described</td><td></td></tr>
+<tr><td>Example 2: instance of British understatement or irony</td><td></td></tr>
+<tr><td>Taboo topic(s) mentioned</td><td></td></tr>
+<tr><td>Speakers' tone — how do they handle sensitive content?</td><td></td></tr>
+<tr><td>Main message / conclusion of the episode</td><td></td></tr>
+</tbody></table>`},
+{title:"Task 8 · Sentence Sorting — Reconstruct the Dialogue",meta:"individual",body:`<table class="task-table"><thead><tr><th>#</th><th>Scrambled words</th><th>Your answer</th></tr></thead><tbody>
+<tr><td>1</td><td>sorry / I / am / so / , / I / did / not / mean / to / offend / you</td><td></td></tr>
+<tr><td>2</td><td>understand / I / , / but / it / did / confuse / me / a / little</td><td></td></tr>
+<tr><td>3</td><td>cultures / interpret / different / humour / very / differently</td><td></td></tr>
+<tr><td>4</td><td>joke / I / realise / that / now / the / did / not / translate / well / culturally</td><td></td></tr>
+<tr><td>5</td><td>I / appreciate / your / honesty / — / let / us / clarify / this / together</td><td></td></tr>
+<tr><td>6</td><td>resolve / open / communication / can / most / misunderstandings</td><td></td></tr>
+</tbody></table>`},
+{title:"Task 9 · Error Correction",meta:"individual",body:`<table class="task-table"><thead><tr><th>Sentence with ONE error</th><th>Corrected sentence</th></tr></thead><tbody>
+<tr><td>1. Sarcasm always means exactly what the words say — there is no hidden meaning.</td><td></td></tr>
+<tr><td>2. British understatement means exaggerating how serious or impressive something is.</td><td></td></tr>
+<tr><td>3. A faux pas is a perfect cultural move that always creates a positive impression.</td><td></td></tr>
+<tr><td>4. All cultures share the same sense of humour, so jokes always translate perfectly.</td><td></td></tr>
+<tr><td>5. Face-saving strategies are used to make someone feel MORE embarrassed in public.</td><td></td></tr>
+</tbody></table>`}
+],
+po:[
+{title:"Task 10 · Role-play — The Business Meeting",meta:"pairs · 6 min",body:`<table class="task-table"><thead><tr><th>Role</th><th>Communication style</th><th>Your goal</th></tr></thead><tbody>
+<tr><td><strong>Student A — British business rep</strong></td><td>Uses understatement, indirect language, dry humour</td><td>Be polite and professional — but don't be too direct</td></tr>
+<tr><td><strong>Student B — Kazakh colleague</strong></td><td>Direct, open, sincere communication style</td><td>Understand your partner — ask for clarification when confused</td></tr>
+</tbody></table>
+<p style="margin-top:10px"><strong>After the role-play:</strong> What misunderstandings happened? How did you resolve them? What would you do differently next time?</p>`},
+{title:"Task 11 · Episode Analysis",meta:"pairs",body:`<p>Choose TWO moments from the video where humour or body language was discussed. Explain WHY each moment is culturally significant.</p>
+<table class="task-table"><thead><tr><th>Moment from video</th><th>What happened</th><th>Why is it culturally significant?</th></tr></thead><tbody>
+<tr><td>Moment 1</td><td></td><td></td></tr>
+<tr><td>Moment 2</td><td></td><td></td></tr>
+</tbody></table>`},
+{title:"Task 12 · Mini-Debate",meta:"class activity",body:`<p><strong>Motion:</strong> "Humour can be successfully translated across cultures."</p>
+<ul><li><strong>Team FOR:</strong> defend the motion with at least 3 arguments</li>
+<li><strong>Team AGAINST:</strong> oppose with at least 3 counter-arguments</li></ul>
+<p>Each team speaks for 2 minutes. Then 1 minute for rebuttal. Teacher acts as chair.</p>`},
+{title:"Task 13 · Reflective Writing",meta:"individual · 80–120 words",body:`<p>What did you learn about the relationship between humour and culture? Describe one specific example from the video or the role-play where a misunderstanding could have occurred. How would you avoid it in real life?</p>`},
+{title:"Assessment",meta:"ICC Score",body:`<table class="task-table"><thead><tr><th>ICC Descriptor</th><th>Assessment Criteria</th><th>Score</th></tr></thead><tbody>
+<tr><td>Understanding cultural context</td><td>Identifies cultural norms and humour differences accurately</td><td>15 pts</td></tr>
+<tr><td>Pragmatic interpretation</td><td>Recognises irony, sarcasm, and understatement in context</td><td>15 pts</td></tr>
+<tr><td>Appropriate intercultural response</td><td>Responds appropriately in role-play despite cultural differences</td><td>15 pts</td></tr>
+<tr><td>Critical thinking</td><td>Analyses misunderstanding triggers and face-saving strategies</td><td>10 pts</td></tr>
+<tr><td>Reflection quality</td><td>Personal reflection with specific example and solution</td><td>10 pts</td></tr>
+<tr><td>Communication fluency</td><td>Clear, confident English throughout all tasks</td><td>10 pts</td></tr>
+</tbody></table>`}
+]},
+
+{n:5,t:"Apology and Face-Saving",s:"Norms · Directness · Strategies",
+focus:"Apology norms · Face-saving strategies",
+video:"EnglishClass101 — How to apologize in English",
+link:"https://www.youtube.com/",duration:"5 min",
+icc:"Speech acts · Politeness · Pragmatic competence",
+out:"Students recognise and produce culturally appropriate apologies",
+goal:"Use face-saving strategies and apology formulas in intercultural contexts",
+pre:[
+{title:"Task 1 · Warm-up Discussion",meta:"pairs · 4 min",body:`<ol>
+<li>How do you apologise in Kazakh? Is there one standard phrase or several options?</li>
+<li>When would you say sorry to a friend vs. a teacher vs. a stranger? What changes?</li>
+<li><strong>PREDICT:</strong> What do you think makes a good apology in British culture?</li>
+</ol>`},
+{title:"Task 2 · Vocabulary",meta:"individual",body:`<table class="task-table"><thead><tr><th>#</th><th>Word</th><th>Definition</th></tr></thead><tbody>
+<tr><td>1</td><td><strong>face-saving</strong></td><td>A — Directly expressing thoughts without softening the message</td></tr>
+<tr><td>2</td><td><strong>sincere</strong></td><td>B — A strategy that protects someone's dignity in an awkward situation</td></tr>
+<tr><td>3</td><td><strong>indirect</strong></td><td>C — To officially admit and accept that something is true</td></tr>
+<tr><td>4</td><td><strong>blunt</strong></td><td>D — Expressing something in a roundabout, softened way</td></tr>
+<tr><td>5</td><td><strong>acknowledge</strong></td><td>E — Genuine and honest; meaning what you say</td></tr>
+</tbody></table>`},
+{title:"Task 3 · True / False Prediction",meta:"individual then check",body:`<table class="task-table"><thead><tr><th>Statement</th><th>Prediction</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>1. In British culture, apologising is used very frequently — even for small inconveniences.</td><td>T / F</td><td></td></tr>
+<tr><td>2. The phrase "I'm sorry you feel that way" is a sincere apology.</td><td>T / F</td><td></td></tr>
+<tr><td>3. In some cultures, a public apology can cause more embarrassment than help.</td><td>T / F</td><td></td></tr>
+<tr><td>4. Apology norms are exactly the same in all English-speaking countries.</td><td>T / F</td><td></td></tr>
+</tbody></table>`},
+{title:"Task 4 · Cultural Quiz",meta:"individual",body:`<ol>
+<li>In which culture do people apologise most frequently in daily life?</li>
+<li>What is the difference between "I'm sorry" and "I apologise"?</li>
+<li>What does "saving face" mean in a cultural context?</li>
+<li>Can you think of a situation where NOT apologising is the polite choice?</li>
+</ol>`}
+],
+wh:[
+{title:"Task 5 · Apology Formula Finder",meta:"while watching",body:`<p>Write down every apology expression you hear in the video.</p>
+<table class="task-table"><thead><tr><th>#</th><th>Apology expression heard</th><th>Formal or informal?</th><th>Situation used</th></tr></thead><tbody>
+<tr><td>1</td><td></td><td></td><td></td></tr>
+<tr><td>2</td><td></td><td></td><td></td></tr>
+<tr><td>3</td><td></td><td></td><td></td></tr>
+<tr><td>4</td><td></td><td></td><td></td></tr>
+</tbody></table>`},
+{title:"Task 6 · Style Comparison",meta:"while watching",body:`<table class="task-table"><thead><tr><th>Direct apology style</th><th>Indirect apology style</th></tr></thead><tbody>
+<tr><td>Example from video:</td><td>Example from video:</td></tr>
+<tr><td>When is it used?</td><td>When is it used?</td></tr>
+<tr><td>Cultural context:</td><td>Cultural context:</td></tr>
+</tbody></table>`},
+{title:"Task 7 · Reaction Analysis",meta:"while watching",body:`<p>Observe how the person receiving the apology reacts. Record your observations.</p>
+<table class="task-table"><thead><tr><th>Moment</th><th>Apology given</th><th>Reaction observed</th><th>What does the reaction tell us?</th></tr></thead><tbody>
+<tr><td>1</td><td></td><td></td><td></td></tr>
+<tr><td>2</td><td></td><td></td><td></td></tr>
+</tbody></table>`},
+{title:"Task 8 · Error Correction",meta:"individual",body:`<table class="task-table"><thead><tr><th>Sentence with ONE cultural/linguistic error</th><th>Corrected sentence</th></tr></thead><tbody>
+<tr><td>1. "I'm sorry you feel that way" is always considered a sincere and complete apology.</td><td></td></tr>
+<tr><td>2. In formal situations, it is best to use "Oops, my bad!" to apologise.</td><td></td></tr>
+<tr><td>3. A public apology always makes the situation better in every culture.</td><td></td></tr>
+<tr><td>4. Face-saving strategies are used to make the other person feel more embarrassed.</td><td></td></tr>
+</tbody></table>`}
+],
+po:[
+{title:"Task 9 · Dialogue Writing",meta:"pairs",body:`<p>Write a dialogue (8 lines) between two people from different cultures. Include a face-saving strategy.</p>
+<p><strong>Situation:</strong> A student forgot to submit an important assignment. They must apologise to their teacher.</p>`},
+{title:"Task 10 · Role-play: Formal Apology",meta:"pairs · 6 min",body:`<p>Act out ONE of the following situations. Use appropriate apology formulas and face-saving strategies.</p>
+<ul>
+<li><strong>Situation A:</strong> You arrived 15 minutes late to an important meeting.</li>
+<li><strong>Situation B:</strong> You gave incorrect information to a colleague, which caused a problem.</li>
+</ul>`},
+{title:"Task 11 · Cross-cultural Comparison",meta:"small groups",body:`<table class="task-table"><thead><tr><th>Aspect of apology</th><th>British culture</th><th>Kazakh culture</th><th>Japanese culture</th></tr></thead><tbody>
+<tr><td>Frequency of apologising</td><td></td><td></td><td></td></tr>
+<tr><td>Level of directness</td><td></td><td></td><td></td></tr>
+<tr><td>Non-verbal behaviour during apology</td><td></td><td></td><td></td></tr>
+<tr><td>Public vs. private apology</td><td></td><td></td><td></td></tr>
+</tbody></table>`},
+{title:"Assessment",meta:"ICC Score",body:`<table class="task-table"><thead><tr><th>ICC Descriptor</th><th>Assessment Criteria</th><th>Score</th></tr></thead><tbody>
+<tr><td>Speech act knowledge</td><td>Identifies and uses apology formulas correctly</td><td>15 pts</td></tr>
+<tr><td>Pragmatic competence</td><td>Chooses appropriate apology style for context</td><td>15 pts</td></tr>
+<tr><td>Face-saving awareness</td><td>Understands and applies face-saving strategies</td><td>15 pts</td></tr>
+<tr><td>Cross-cultural comparison</td><td>Compares apology norms across three cultures</td><td>10 pts</td></tr>
+<tr><td>Role-play performance</td><td>Fluent, culturally appropriate, sincere delivery</td><td>10 pts</td></tr>
+</tbody></table>`}
+]},
+
+{n:6,t:"Invitation and Refusal",s:"Politeness · Register · Etiquette",
+focus:"Accepting/declining invitations · Cultural etiquette",
+video:"BBC Learning English — Accepting and declining invitations",
+link:"https://www.youtube.com/",duration:"4–5 min",
+icc:"Politeness strategies · Indirect communication · Social etiquette",
+out:"Students produce polite invitations and refusals using appropriate register",
+goal:"Maintain politeness and register when accepting or declining social invitations",
+pre:[
+{title:"Task 1 · Warm-up Discussion",meta:"pairs · 4 min",body:`<ol>
+<li>How do you say "no" politely in Kazakh? Do you ever give a reason, or just decline?</li>
+<li>In your culture, is it considered rude to refuse an invitation? Why / why not?</li>
+<li><strong>PREDICT:</strong> How do you think British people politely decline an invitation they don't want to accept?</li>
+</ol>`},
+{title:"Task 2 · Vocabulary",meta:"individual",body:`<table class="task-table"><thead><tr><th>#</th><th>Word</th><th>Definition</th></tr></thead><tbody>
+<tr><td>1</td><td><strong>polite refusal</strong></td><td>A — Rules of polite behaviour in social situations</td></tr>
+<tr><td>2</td><td><strong>indirect language</strong></td><td>B — To officially say no to an invitation or offer</td></tr>
+<tr><td>3</td><td><strong>decline</strong></td><td>C — Saying no in a kind, softened way without causing offence</td></tr>
+<tr><td>4</td><td><strong>accept</strong></td><td>D — Communicating in a roundabout way to avoid being too direct</td></tr>
+<tr><td>5</td><td><strong>etiquette</strong></td><td>E — To say yes to an invitation or offer</td></tr>
+</tbody></table>`},
+{title:"Task 3 · Rating Scale",meta:"individual",body:`<p>Rate these refusals from 1 (very direct) to 5 (very indirect/polite). Then compare with a partner.</p>
+<table class="task-table"><thead><tr><th>#</th><th>Refusal</th><th>Rating (1–5)</th><th>Would this cause offence?</th></tr></thead><tbody>
+<tr><td>1</td><td>"No."</td><td></td><td></td></tr>
+<tr><td>2</td><td>"I'm afraid I won't be able to make it."</td><td></td><td></td></tr>
+<tr><td>3</td><td>"That's so kind of you — I wish I could come!"</td><td></td><td></td></tr>
+<tr><td>4</td><td>"I'll try to come." (with no intention of going)</td><td></td><td></td></tr>
+<tr><td>5</td><td>"I have other plans, but thank you for thinking of me."</td><td></td><td></td></tr>
+</tbody></table>`},
+{title:"Task 4 · Prediction",meta:"individual",body:`<ol>
+<li>What phrase do you think British people use most often to politely decline?</li>
+<li>Do British people usually give a reason when they refuse? Why might this matter culturally?</li>
+<li>Is "I'll think about it" the same as "no" in your culture? How about in British culture?</li>
+</ol>`}
+],
+wh:[
+{title:"Task 5 · Scenario Rating",meta:"while watching",body:`<table class="task-table"><thead><tr><th>Scenario from video</th><th>Response given</th><th>Rating (1–5 politeness)</th><th>Would this work in Kazakhstan?</th></tr></thead><tbody>
+<tr><td>1</td><td></td><td></td><td></td></tr>
+<tr><td>2</td><td></td><td></td><td></td></tr>
+<tr><td>3</td><td></td><td></td><td></td></tr>
+</tbody></table>`},
+{title:"Task 6 · Politeness Formula Hunt",meta:"while watching",body:`<table class="task-table"><thead><tr><th>Formula type</th><th>Exact phrase from video</th><th>Context / situation</th></tr></thead><tbody>
+<tr><td>Accepting an invitation</td><td></td><td></td></tr>
+<tr><td>Declining politely (with reason)</td><td></td><td></td></tr>
+<tr><td>Declining politely (without reason)</td><td></td><td></td></tr>
+<tr><td>Expressing regret when declining</td><td></td><td></td></tr>
+</tbody></table>`},
+{title:"Task 7 · Intonation Focus",meta:"while watching — listen carefully",body:`<p>Listen to the tone of voice. For each refusal, decide: does it sound <strong>sincere</strong>, <strong>polite but firm</strong>, or <strong>uncertain</strong>?</p>
+<table class="task-table"><thead><tr><th>Refusal heard</th><th>Tone assessment</th><th>How do you know?</th></tr></thead><tbody>
+<tr><td>1</td><td></td><td></td></tr>
+<tr><td>2</td><td></td><td></td></tr>
+<tr><td>3</td><td></td><td></td></tr>
+</tbody></table>`},
+{title:"Task 8 · Cultural Notes",meta:"while watching",body:`<p>Write down 3 cultural observations from the video — things that surprised you or that differ from your own culture.</p>
+<ol><li></li><li></li><li></li></ol>`}
+],
+po:[
+{title:"Task 9 · Mini-Dialogue Writing",meta:"pairs",body:`<p>Write a 6-line dialogue. Include one invitation, one polite refusal, and a face-saving response.</p>
+<p><strong>Situation:</strong> Your friend invites you to a party on the weekend. You don't want to go, but you don't want to hurt their feelings.</p>`},
+{title:"Task 10 · Role-play: Formal Setting",meta:"pairs · 6 min",body:`<table class="task-table"><thead><tr><th>Student A</th><th>Student B</th><th>Key challenge</th></tr></thead><tbody>
+<tr><td>A senior colleague — invites B to give a speech at an event</td><td>A junior employee — needs to decline (too nervous / not ready)</td><td>Be polite, give a reason, offer an alternative</td></tr>
+</tbody></table>`},
+{title:"Task 11 · Reflective Writing",meta:"individual · 80–120 words",body:`<p>Describe a situation where you had to politely refuse something in real life. How did you do it? Looking back, was it culturally appropriate? What would you do differently after studying this lesson?</p>`},
+{title:"Assessment",meta:"ICC Score",body:`<table class="task-table"><thead><tr><th>ICC Descriptor</th><th>Assessment Criteria</th><th>Score</th></tr></thead><tbody>
+<tr><td>Politeness strategies</td><td>Correctly identifies and uses polite refusal formulas</td><td>15 pts</td></tr>
+<tr><td>Register awareness</td><td>Chooses appropriate register for formal vs. informal contexts</td><td>15 pts</td></tr>
+<tr><td>Intercultural response</td><td>Produces a culturally sensitive response in role-play</td><td>15 pts</td></tr>
+<tr><td>Intonation & non-verbal</td><td>Demonstrates awareness of tone and non-verbal cues</td><td>10 pts</td></tr>
+<tr><td>Reflection quality</td><td>Personal reflection with specific cultural insight</td><td>10 pts</td></tr>
+</tbody></table>`}
+]},
+
+{n:7,t:"Non-Verbal Communication",s:"Gesture · Proxemics · Body language",
+focus:"Gesture · Facial expression · Intonation · Cultural variation",
+video:"TEDx Bergen — Cross Cultural Communication (Pellegrino Riccardi)",
+link:"https://www.youtube.com/watch?v=YMyofREc5Jk",duration:"0:00–5:00",
+icc:"Non-verbal communication · Proxemics · Power & status signals · Cross-cultural body language",
+out:"Students interpret body language in cultural context; understand that the same gesture can mean opposite things",
+goal:"Read and produce culturally appropriate non-verbal communication",
+pre:[
+{title:"Task 1 · Warm-up Discussion",meta:"pairs · 4 min",body:`<ol>
+<li>When you walk into a room full of strangers, what does your body do automatically? Why?</li>
+<li>Think of a gesture that is NORMAL in Kazakhstan but might be strange or rude in another country. What is it?</li>
+<li>'You can lie with your words but not with your body.' Do you agree with this statement? Give an example.</li>
+<li>Before watching — <strong>PREDICT:</strong> what 'cultural shock' story do you think a British person living in Norway might tell?</li>
+</ol>`},
+{title:"Task 2 · Vocabulary — Match the Word to its Definition",meta:"individual",body:`<table class="task-table"><thead><tr><th>#</th><th>Word</th><th>Definition</th></tr></thead><tbody>
+<tr><td>1</td><td><strong>posture</strong></td><td>A — The way you position and hold your body — standing, sitting, leaning</td></tr>
+<tr><td>2</td><td><strong>proxemics</strong></td><td>B — A signal communicated WITHOUT words — through movement, expression, or space</td></tr>
+<tr><td>3</td><td><strong>gesture</strong></td><td>C — The study of personal space and physical distance in human communication</td></tr>
+<tr><td>4</td><td><strong>gaze</strong></td><td>D — A movement of the hands, head, or body used to express meaning</td></tr>
+<tr><td>5</td><td><strong>status</strong></td><td>E — A steady, fixed look at a person or object — can signal dominance or attention</td></tr>
+<tr><td>6</td><td><strong>non-verbal cue</strong></td><td>F — A person's social position, rank, or level of authority in a group or society</td></tr>
+<tr><td>7</td><td><strong>cultural norm</strong></td><td>G — An unwritten rule about behaviour that most people in a culture follow automatically</td></tr>
+</tbody></table>`},
+{title:"Task 3 · True / False — Predict, then Verify",meta:"individual then check",body:`<table class="task-table"><thead><tr><th>Statement</th><th>Prediction</th><th>Evidence from video</th></tr></thead><tbody>
+<tr><td>1. Non-verbal communication means the same thing in every culture around the world.</td><td>T / F</td><td></td></tr>
+<tr><td>2. Personal space preferences (how close you stand) vary significantly across cultures.</td><td>T / F</td><td></td></tr>
+<tr><td>3. A confident speaker expands their body — taking up space — to signal authority.</td><td>T / F</td><td></td></tr>
+<tr><td>4. Eye contact during a presentation signals confidence in most Western cultures.</td><td>T / F</td><td></td></tr>
+<tr><td>5. Silence in a conversation is always awkward and should be avoided at all costs.</td><td>T / F</td><td></td></tr>
+<tr><td>6. The same gesture (e.g. a nod or a thumbs-up) can have completely different meanings in different cultures.</td><td>T / F</td><td></td></tr>
+</tbody></table>`},
+{title:"Task 4 · Gap-fill",meta:"individual",body:`<div class="word-bank">Word Bank: proxemics · status · posture · gesture · norm · posture</div>
+<ol>
+<li>The study of how humans use physical distance and personal space in communication is called __________.</li>
+<li>A speaker who stands tall, makes eye contact, and uses open gestures is likely signalling high __________.</li>
+<li>When you lean away, cross your arms, and avoid eye contact, your __________ signals discomfort or disinterest.</li>
+<li>A __________ that means 'OK' in the USA can be deeply offensive in parts of South America — same action, opposite meaning.</li>
+<li>Riccardi's story is funny because he followed his own cultural __________ while the Norwegians followed a completely different one.</li>
+<li>Understanding someone's __________ — how they hold their body — can tell you more than their actual words.</li>
+</ol>`}
+],
+wh:[
+{title:"Task 5 · Cultural Observation Checklist",meta:"while watching",body:`<table class="task-table"><thead><tr><th>Observed Behaviour</th><th>YES ✓</th><th>PARTLY ◑</th><th>NO ✗</th></tr></thead><tbody>
+<tr><td>Riccardi uses his own body language to illustrate cultural differences</td><td></td><td></td><td></td></tr>
+<tr><td>The audience reacts — their reactions tell you about shared vs. surprising norms</td><td></td><td></td><td></td></tr>
+<tr><td>Riccardi describes at least one moment of non-verbal cross-cultural confusion</td><td></td><td></td><td></td></tr>
+<tr><td>Tone, pacing, and pauses are used effectively as non-verbal communication tools</td><td></td><td></td><td></td></tr>
+<tr><td>The cultural norms described are clearly different from what might be expected in Kazakhstan</td><td></td><td></td><td></td></tr>
+</tbody></table>`},
+{title:"Task 6 · Note-taking — Capture Key Ideas",meta:"while watching",body:`<table class="task-table"><thead><tr><th>Question</th><th>Your notes</th></tr></thead><tbody>
+<tr><td>1. What personal story does Riccardi tell? Summarise in 2 sentences.</td><td></td></tr>
+<tr><td>2. Which cultural groups are mentioned? What non-verbal difference is highlighted?</td><td></td></tr>
+<tr><td>3. Why is the misunderstanding funny? What makes it a 'cultural clash'?</td><td></td></tr>
+<tr><td>4. What is Riccardi's main message about cross-cultural communication?</td><td></td></tr>
+<tr><td>5. What question does the first 5 minutes leave unanswered?</td><td></td></tr>
+</tbody></table>`},
+{title:"Task 7 · Sentence Sorting — Reconstruct Riccardi's Argument",meta:"individual",body:`<table class="task-table"><thead><tr><th>#</th><th>Scrambled words</th><th>Your answer</th></tr></thead><tbody>
+<tr><td>1</td><td>body / language / your / shapes / how / others / perceive / you</td><td></td></tr>
+<tr><td>2</td><td>the / same / gesture / can / mean / opposite / things / in / different / cultures</td><td></td></tr>
+<tr><td>3</td><td>we / assume / that / our / cultural / norms / are / universal — / they / are / not</td><td></td></tr>
+<tr><td>4</td><td>when / two / people / follow / different / norms / , / confusion / or / offence / results</td><td></td></tr>
+<tr><td>5</td><td>the / solution / is / curiosity — / ask / , / observe / , / and / do / not / assume</td><td></td></tr>
+<tr><td>6</td><td>effective / communicators / adapt / their / non-verbal / behaviour / to / their / audience</td><td></td></tr>
+</tbody></table>`},
+{title:"Task 8 · Error Correction",meta:"individual",body:`<table class="task-table"><thead><tr><th>Sentence with ONE error</th><th>Corrected sentence</th></tr></thead><tbody>
+<tr><td>1. Proxemics is the study of grammar and vocabulary in intercultural communication.</td><td></td></tr>
+<tr><td>2. According to Riccardi, assuming your own cultural norms are universal is a smart communication strategy.</td><td></td></tr>
+<tr><td>3. Non-verbal communication is less important than verbal communication in cross-cultural contexts.</td><td></td></tr>
+<tr><td>4. A gesture always means the same thing regardless of the country or culture you are in.</td><td></td></tr>
+<tr><td>5. Silence in a conversation is universally understood as rudeness in all cultures.</td><td></td></tr>
+</tbody></table>`}
+],
+po:[
+{title:"Task 9 · Body Language Experiment",meta:"whole class · 5 min",body:`<ol>
+<li>Stand up. For 60 seconds, adopt a <strong>CONTRACTED pose</strong>: hunch your shoulders, cross your arms, look at the floor.</li>
+<li>Now switch: for 60 seconds, adopt an <strong>EXPANDED pose</strong>: stand tall, feet shoulder-width apart, chin up, relaxed open hands.</li>
+<li>In pairs: how did each pose make you <strong>FEEL</strong>? Did your partner look more or less confident?</li>
+<li>Connect to the video: what does this experiment tell you about the relationship between body language and perception?</li>
+</ol>`},
+{title:"Task 10 · Cross-cultural Non-verbal Analysis",meta:"pairs + class discussion",body:`<table class="task-table"><thead><tr><th>Non-verbal behaviour</th><th>UK / Western</th><th>Kazakhstan</th><th>Japan</th><th>Could cause misunderstanding?</th></tr></thead><tbody>
+<tr><td>Direct eye contact</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Nodding during conversation</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Silence / pause in speech</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Physical greeting (touch)</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Personal space distance</td><td></td><td></td><td></td><td></td></tr>
+</tbody></table>`},
+{title:"Task 11 · Reflective Writing",meta:"individual · 80–120 words",body:`<p>What is the most important thing Riccardi's talk taught you? Describe a real or imagined situation where a non-verbal misunderstanding could happen between a Kazakh and an English-speaking person. How would you handle it?</p>`},
+{title:"Assessment",meta:"ICC Score",body:`<table class="task-table"><thead><tr><th>ICC Descriptor</th><th>Assessment Criteria</th><th>Score</th></tr></thead><tbody>
+<tr><td>Non-verbal communication analysis</td><td>Correctly interprets body language signals in cultural context</td><td>15 pts</td></tr>
+<tr><td>Understanding cultural context</td><td>Identifies cultural norms across multiple cultures accurately</td><td>15 pts</td></tr>
+<tr><td>Appropriate intercultural response</td><td>Demonstrates culturally aware behaviour in experiment and discussion</td><td>15 pts</td></tr>
+<tr><td>Critical thinking</td><td>Analyses misunderstanding causes and proposes solutions</td><td>10 pts</td></tr>
+<tr><td>Reflection quality</td><td>Insightful personal reflection with concrete example</td><td>10 pts</td></tr>
+<tr><td>Presentation performance</td><td>Clear, well-organised, confident — shows real understanding</td><td>10 pts</td></tr>
+</tbody></table>`}
+]},
+
+{n:8,t:"Integrated Review",s:"All topics · Bloom's taxonomy",
+focus:"Comprehensive intercultural decision-making across all 7 topics",
+video:"Selected clips from Lessons 1–7",
+link:"",duration:"varied",
+icc:"All ICC components: knowledge · attitudes · skills · critical awareness",
+out:"Students analyse, evaluate, and create culturally appropriate responses to complex situations",
+goal:"Demonstrate integrated intercultural communicative competence",
+pre:[
+{title:"Task 1 · Vocabulary Review",meta:"individual · 5 min",body:`<p>Without looking at your notes, write a definition or example for each term:</p>
+<table class="task-table"><thead><tr><th>#</th><th>Term</th><th>Your definition / example</th></tr></thead><tbody>
+<tr><td>1</td><td>register</td><td></td></tr>
+<tr><td>2</td><td>face-saving</td><td></td></tr>
+<tr><td>3</td><td>proxemics</td><td></td></tr>
+<tr><td>4</td><td>sarcasm</td><td></td></tr>
+<tr><td>5</td><td>understatement</td><td></td></tr>
+<tr><td>6</td><td>faux pas</td><td></td></tr>
+<tr><td>7</td><td>non-verbal cue</td><td></td></tr>
+<tr><td>8</td><td>cultural taboo</td><td></td></tr>
+</tbody></table>`},
+{title:"Task 2 · Quick Quiz",meta:"individual",body:`<p>One key idea from each lesson. Answer in one sentence.</p>
+<table class="task-table"><thead><tr><th>Lesson</th><th>Key question</th><th>Your answer</th></tr></thead><tbody>
+<tr><td>L1 Greetings</td><td>What does 'How do you do?' mean and how do you reply?</td><td></td></tr>
+<tr><td>L2 School life</td><td>Name one classroom behaviour that differs across cultures.</td><td></td></tr>
+<tr><td>L3 Family</td><td>What is the difference between nuclear and extended family?</td><td></td></tr>
+<tr><td>L4 Humour</td><td>What is understatement? Give a British example.</td><td></td></tr>
+<tr><td>L5 Apology</td><td>What is a face-saving strategy in an apology?</td><td></td></tr>
+<tr><td>L6 Invitation</td><td>How do British people politely decline an invitation?</td><td></td></tr>
+<tr><td>L7 Non-verbal</td><td>What is proxemics and why does it matter?</td><td></td></tr>
+</tbody></table>`},
+{title:"Task 3 · Case Prediction",meta:"pairs",body:`<p>Read the case scenario. Before watching, predict: what cultural misunderstanding will occur? How will it be resolved?</p>
+<p><strong>Case:</strong> A Kazakh student joins a British university. On the first day, they meet their British flatmate. The flatmate says "We should get coffee sometime!" and walks away. The Kazakh student waits all week for a specific invitation but it never comes.</p>
+<ol><li>What is the misunderstanding?</li><li>Whose cultural norm caused it?</li><li>How should the Kazakh student respond?</li></ol>`},
+{title:"Task 4 · Discussion",meta:"class · 5 min",body:`<ol>
+<li>Which of the 7 lessons did you find most challenging? Why?</li>
+<li>Which lesson was most useful for your real life? Give an example.</li>
+<li>Has any lesson changed how you think about your own culture?</li>
+</ol>`}
+],
+wh:[
+{title:"Task 5 · Bloom's Case Task",meta:"small groups · Bloom's 6 levels",body:`<p>Work through all 6 levels of Bloom's Taxonomy using the Integrated Case (your teacher will provide a video clip).</p>
+<table class="task-table"><thead><tr><th>Level</th><th>Task</th><th>Your response</th></tr></thead><tbody>
+<tr><td><strong>1. Remember</strong></td><td>List 3 intercultural concepts shown in the clip.</td><td></td></tr>
+<tr><td><strong>2. Understand</strong></td><td>Explain what cultural misunderstanding occurred and why.</td><td></td></tr>
+<tr><td><strong>3. Apply</strong></td><td>Which apology or face-saving strategy would work best here?</td><td></td></tr>
+<tr><td><strong>4. Analyse</strong></td><td>What cultural assumptions led to the misunderstanding?</td><td></td></tr>
+<tr><td><strong>5. Evaluate</strong></td><td>Was either person's response culturally appropriate? Justify your view.</td><td></td></tr>
+<tr><td><strong>6. Create</strong></td><td>Write an alternative scenario where the misunderstanding is avoided.</td><td></td></tr>
+</tbody></table>`},
+{title:"Task 6 · Error Identification",meta:"while watching",body:`<p>Watch the clip and identify every cultural mistake made. Connect each error to the relevant lesson.</p>
+<table class="task-table"><thead><tr><th>#</th><th>Cultural error observed</th><th>Related lesson</th><th>Better alternative</th></tr></thead><tbody>
+<tr><td>1</td><td></td><td></td><td></td></tr>
+<tr><td>2</td><td></td><td></td><td></td></tr>
+<tr><td>3</td><td></td><td></td><td></td></tr>
+</tbody></table>`},
+{title:"Task 7 · Solution Brainstorm",meta:"pairs",body:`<p>For each cultural error you identified in Task 6, propose 3 solutions. Rank them from most to least effective and explain why.</p>`},
+{title:"Task 8 · Peer Discussion",meta:"pairs",body:`<p>Compare your Bloom's Case Task responses (Task 5) with your partner. Discuss: Which level was hardest? Which solution (Task 7) is most culturally sensitive? Why?</p>`}
+],
+po:[
+{title:"Task 9 · Alternative Scenario Writing",meta:"individual",body:`<p>Rewrite the case from Task 3 so that NO misunderstanding occurs. Show that both people communicate with intercultural awareness. Write 8–10 lines of dialogue.</p>`},
+{title:"Task 10 · Presentation",meta:"pairs or groups · 2–3 min",body:`<p><strong>Topic:</strong> "The most important intercultural lesson from our 8 weeks of study."</p>
+<p>Your presentation must include:</p>
+<ul>
+<li>One specific intercultural concept (e.g. face-saving, proxemics, register)</li>
+<li>One real or realistic example of a misunderstanding</li>
+<li>One practical strategy to avoid it in the future</li>
+</ul>`},
+{title:"Task 11 · Final Reflective Writing",meta:"individual · 120–150 words",body:`<p>Answer these questions in your reflection:</p>
+<ol>
+<li>What is the most important thing you have learned about intercultural communication over these 8 lessons?</li>
+<li>How has your attitude towards other cultures changed?</li>
+<li>Describe one situation in your own life where you will apply what you have learned.</li>
+</ol>`},
+{title:"Task 12 · ICC Self-Assessment",meta:"individual",body:`<p>Rate yourself on the Lazura Kazykhankyzy ICC Scale. Compare with your pre-course score.</p>
+<table class="task-table"><thead><tr><th>ICC Component</th><th>My score at START</th><th>My score NOW</th><th>What changed?</th></tr></thead><tbody>
+<tr><td>Knowledge</td><td></td><td></td><td></td></tr>
+<tr><td>Awareness</td><td></td><td></td><td></td></tr>
+<tr><td>Skills</td><td></td><td></td><td></td></tr>
+<tr><td>Attitude</td><td></td><td></td><td></td></tr>
+</tbody></table>`},
+{title:"Assessment",meta:"ICC Score",body:`<table class="task-table"><thead><tr><th>ICC Descriptor</th><th>Assessment Criteria</th><th>Score</th></tr></thead><tbody>
+<tr><td>Integrated knowledge</td><td>Connects concepts from all 7 previous lessons accurately</td><td>15 pts</td></tr>
+<tr><td>Critical thinking (Bloom)</td><td>Works through all 6 levels of Bloom's Taxonomy coherently</td><td>20 pts</td></tr>
+<tr><td>Creative production</td><td>Alternative scenario shows genuine intercultural awareness</td><td>15 pts</td></tr>
+<tr><td>Presentation quality</td><td>Clear, confident, well-structured — real understanding evident</td><td>15 pts</td></tr>
+<tr><td>Self-assessment honesty</td><td>ICC self-rating is specific, honest, and evidence-based</td><td>10 pts</td></tr>
+<tr><td>Final reflection depth</td><td>Personal growth evident; concrete future application stated</td><td>10 pts</td></tr>
+</tbody></table>`}
+]}
+];
+
+const done=new Set();
+let cur=0,stage=0;
+
+function stageColor(s){return['pre','while','post'][s]}
+function stageLabel(s){return['Pre-viewing','While-viewing','Post-viewing'][s]}
+function stageIcon(s){
+  return[`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16"/></svg>`,
+  `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="12" x2="15" y2="14"/></svg>`,
+  `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20,6 9,17 4,12"/></svg>`][s];
+}
+function checkIcon(){return`<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>`}
+
+function renderSidebar(){
+  document.getElementById('sidebar').innerHTML=`
+    <div class="sidebar-section" style="margin-bottom:12px">Lessons</div>
+    ${LESSONS.map((l,i)=>`
+      <button class="sidebar-item ${i===cur?'active':''} ${done.has(i)?'done':''}" onclick="goTo(${i})">
+        <div class="sidebar-num">${done.has(i)?checkIcon():l.n}</div>
+        <div class="sidebar-info">
+          <div class="sidebar-name">${l.t}</div>
+          <div class="sidebar-sub-name">${l.s}</div>
+        </div>
+      </button>`).join('')}
+    <div class="sidebar-footer">
+      <div class="progress-label"><span>Progress</span><span>${done.size} / ${LESSONS.length}</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${done.size/LESSONS.length*100}%"></div></div>
+    </div>`;
+}
+
+function renderMain(){
+  const l=LESSONS[cur];
+  const stages=[l.pre,l.wh,l.po];
+  const tasks=stages[stage];
+  const colors=['blue','amber','green'];
+  const tabActiveClass=['active-pre','active-while','active-post'];
+
+  document.getElementById('main').innerHTML=`
+    <div class="lesson-header">
+      <div class="lesson-num-big">${l.n}</div>
+      <div class="lesson-header-info">
+        <h1>${l.t}</h1>
+        <p>${l.s}</p>
+        <div class="lesson-header-badges">
+          <span class="lbadge lbadge-blue">B1 Level</span>
+          <span class="lbadge lbadge-gold">${l.duration}</span>
+          <span class="lbadge lbadge-blue">${l.icc}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-card"><div class="info-card-label">ICC Focus</div><div class="info-card-val">${l.focus}</div></div>
+      <div class="info-card"><div class="info-card-label">Video Source</div><div class="info-card-val">${l.video}${l.link?` · <a href="${l.link}" target="_blank" style="color:var(--blue)">Watch ↗</a>`:''}</div></div>
+      <div class="info-card"><div class="info-card-label">Communicative Goal</div><div class="info-card-val">${l.goal}</div></div>
+    </div>
+
+    <div class="outcome-box">
+      <div><div class="outcome-label">Expected Outcome</div><div class="outcome-text">${l.out}</div></div>
+    </div>
+
+    <div class="section-title">Tasks by Stage</div>
+    <div class="stage-tabs">
+      ${[0,1,2].map(i=>`<button class="stage-tab ${stage===i?tabActiveClass[i]:''}" onclick="setStage(${i})">${stageIcon(i)} ${stageLabel(i)}</button>`).join('')}
+    </div>
+    <div class="stage-content visible">
+      ${tasks.map((t,ti)=>`
+        <div class="task-block">
+          <div class="task-header">
+            <div class="task-num task-num-${stageColor(stage)}">T${ti+1}</div>
+            <div>
+              <div class="task-title">${t.title}</div>
+              ${t.meta?`<div class="task-meta">${t.meta}</div>`:''}
+            </div>
+          </div>
+          <div class="task-body">${t.body}</div>
+        </div>`).join('')}
+    </div>
+
+    <button class="mark-done-btn ${done.has(cur)?'done':''}" onclick="toggleDone()">
+      ${checkIcon()} ${done.has(cur)?'Completed ✓':'Mark as completed'}
+    </button>
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goTo(${cur-1})" ${cur===0?'disabled':''}>← Previous</button>
+      <span style="font-size:13px;color:var(--text-sec);font-weight:500">${cur+1} / ${LESSONS.length}</span>
+      <button class="nav-btn ${cur<LESSONS.length-1?'nav-btn-primary':''}" onclick="goTo(${cur+1})" ${cur===LESSONS.length-1?'disabled':''}>Next →</button>
+    </div>`;
+}
+
+function setStage(s){stage=s;renderMain();}
+function goTo(i){if(i<0||i>=LESSONS.length)return;cur=i;stage=0;renderSidebar();renderMain();window.scrollTo({top:0,behavior:'smooth'});}
+function toggleDone(){done.has(cur)?done.delete(cur):done.add(cur);renderSidebar();renderMain();}
+renderSidebar();renderMain();
+</script>
+</body>
+</html>
